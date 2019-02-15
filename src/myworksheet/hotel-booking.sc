@@ -38,7 +38,7 @@ val Ridgewood = Hotel("Ridgewood", 5, 220, 100, 150, 40)
 
 val hotelsList = List(Lakewood, Bridgewood, Ridgewood)
 
-def findPriceByCustTypeAndDay(hotel: Hotel, customerType: CUSTOMER_TYPES, day: DAYS): Int = {
+def getHotelPrice(hotel: Hotel, customerType: CUSTOMER_TYPES, day: DAYS): Int = {
   if (day == DAY.WEEKDAY) {
     if (customerType == CUSTOMER_TYPE.REGULAR) {
       return hotel.regularRateWeekDay
@@ -48,13 +48,14 @@ def findPriceByCustTypeAndDay(hotel: Hotel, customerType: CUSTOMER_TYPES, day: D
   if (customerType == CUSTOMER_TYPE.REGULAR) {
     return hotel.rewardRateWeekEnd
   }
-  return hotel.rewardRateWeekEnd
+  hotel.rewardRateWeekEnd
 }
 
-def findCheapestCustomer(customerType: CUSTOMER_TYPES, day: DAYS): Hotel = {
+def findCheapestHotel(customerType: CUSTOMER_TYPES, day: DAYS): Hotel = {
   hotelsList
-    .sortWith((a, b) => findPriceByCustTypeAndDay(a, customerType, day) < findPriceByCustTypeAndDay(b, customerType, day))
-    .head
+    .map(hotel => (getHotelPrice(hotel, customerType, day), hotel))
+    .sortWith((a, b) => a._1 < b._1)
+    .head._2
 }
 
-findCheapestCustomer(CUSTOMER_TYPE.REGULAR, DAY.WEEKDAY)
+findCheapestHotel(CUSTOMER_TYPE.REGULAR, DAY.WEEKDAY)
