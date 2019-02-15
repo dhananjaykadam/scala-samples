@@ -50,9 +50,8 @@ def getHotelPrice(hotel: Hotel, customerType: CUSTOMER_TYPES, day: DAYS): Int = 
 
 def findCheapestHotel(customerType: CUSTOMER_TYPES, day: DAYS): Hotel = {
   hotelsList
-//    .minBy(h => (getHotelPrice(h, customerType, day), h.rating))
     .map(hotel => (getHotelPrice(hotel, customerType, day), hotel))
-    .sortBy(t => (t._1,t._2.rating))
+    .sortWith((a, b) => (a._1 < b._1) || (a._1 == b._1 && a._2.rating > b._2.rating))
     .head._2
 }
 
