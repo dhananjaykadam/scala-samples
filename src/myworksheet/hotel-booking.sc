@@ -1,5 +1,7 @@
 sealed trait CUSTOMER_TYPES
 
+sealed trait DAYS
+
 object CUSTOMER_TYPE {
 
   object REGULAR extends CUSTOMER_TYPES
@@ -7,8 +9,6 @@ object CUSTOMER_TYPE {
   object REWARD extends CUSTOMER_TYPES
 
 }
-
-sealed trait DAYS
 
 object DAY {
 
@@ -18,17 +18,14 @@ object DAY {
 
 }
 
-case class Customer(
-                     name: String,
-                     customerType: CUSTOMER_TYPES
-                   )
+case class Customer(name: String, customerType: CUSTOMER_TYPES)
 
 case class Hotel(
                   name: String,
                   rating: Int,
                   regularRateWeekDay: Int,
-                  regularRateWeekEnd: Int,
                   rewardRateWeekDay: Int,
+                  regularRateWeekEnd: Int,
                   rewardRateWeekEnd: Int
                 )
 
@@ -46,16 +43,21 @@ def getHotelPrice(hotel: Hotel, customerType: CUSTOMER_TYPES, day: DAYS): Int = 
     return hotel.rewardRateWeekDay
   }
   if (customerType == CUSTOMER_TYPE.REGULAR) {
-    return hotel.rewardRateWeekEnd
+    return hotel.regularRateWeekEnd
   }
   hotel.rewardRateWeekEnd
 }
 
 def findCheapestHotel(customerType: CUSTOMER_TYPES, day: DAYS): Hotel = {
   hotelsList
+//    .minBy(h => (getHotelPrice(h, customerType, day), h.rating))
     .map(hotel => (getHotelPrice(hotel, customerType, day), hotel))
-    .sortWith((a, b) => a._1 < b._1)
+    .sortBy(t => (t._1,t._2.rating))
     .head._2
 }
 
 findCheapestHotel(CUSTOMER_TYPE.REGULAR, DAY.WEEKDAY)
+findCheapestHotel(CUSTOMER_TYPE.REWARD, DAY.WEEKDAY)
+
+findCheapestHotel(CUSTOMER_TYPE.REGULAR, DAY.WEEKEND)
+findCheapestHotel(CUSTOMER_TYPE.REWARD, DAY.WEEKEND)
