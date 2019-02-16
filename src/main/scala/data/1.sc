@@ -25,5 +25,7 @@ val json: JsValue = Json.obj(
 
 // urn:blah => hello blah
 
-val result = JsDemo.transform(json)
-Json.prettyPrint(result)
+val smallJson = Json.obj("a" -> 10)
+
+val result = JsDemo.transform(smallJson)
+Json.prettyPrint(smallJson)
