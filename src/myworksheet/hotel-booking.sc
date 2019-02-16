@@ -1,21 +1,14 @@
 sealed trait CUSTOMER_TYPES
-
 sealed trait DAYS
 
 object CUSTOMER_TYPE {
-
   object REGULAR extends CUSTOMER_TYPES
-
   object REWARD extends CUSTOMER_TYPES
-
 }
 
 object DAY {
-
   object WEEKDAY extends DAYS
-
   object WEEKEND extends DAYS
-
 }
 
 case class Customer(name: String, customerType: CUSTOMER_TYPES)
@@ -48,15 +41,15 @@ def getHotelPrice(hotel: Hotel, customerType: CUSTOMER_TYPES, day: DAYS): Int = 
   hotel.rewardRateWeekEnd
 }
 
-def findCheapestHotel(customerType: CUSTOMER_TYPES, day: DAYS): Hotel = {
+def findCheapHotel(customerType: CUSTOMER_TYPES, day: DAYS): Hotel = {
   hotelsList
     .map(hotel => (getHotelPrice(hotel, customerType, day), hotel))
     .sortWith((a, b) => (a._1 < b._1) || (a._1 == b._1 && a._2.rating > b._2.rating))
     .head._2
 }
 
-findCheapestHotel(CUSTOMER_TYPE.REGULAR, DAY.WEEKDAY)
-findCheapestHotel(CUSTOMER_TYPE.REWARD, DAY.WEEKDAY)
+findCheapHotel(CUSTOMER_TYPE.REGULAR, DAY.WEEKDAY)
+findCheapHotel(CUSTOMER_TYPE.REWARD, DAY.WEEKDAY)
 
-findCheapestHotel(CUSTOMER_TYPE.REGULAR, DAY.WEEKEND)
-findCheapestHotel(CUSTOMER_TYPE.REWARD, DAY.WEEKEND)
+findCheapHotel(CUSTOMER_TYPE.REGULAR, DAY.WEEKEND)
+findCheapHotel(CUSTOMER_TYPE.REWARD, DAY.WEEKEND)
